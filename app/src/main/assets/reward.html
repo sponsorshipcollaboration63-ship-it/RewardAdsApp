@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="authScreen" class="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+            <div class="text-center mb-8">
+                <div class="bg-gradient-to-r from-purple-600 to-pink-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800">Reward App</h1>
+                <p class="text-gray-600 mt-2">Ads dekho, paise kamao!</p>
+            </div>
+
+            <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
+                <button onclick="showLoginTab()" id="loginTab" class="flex-1 py-2 rounded-md transition bg-white shadow text-purple-600 font-semibold">Login</button>
+                <button onclick="showSignupTab()" id="signupTab" class="flex-1 py-2 rounded-md transition text-gray-600">Sign Up</button>
+            </div>
+
+            <div class="space-y-4">
+                <div id="nameField" style="display: none;">
+                    <label class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        Naam
+                    </label>
+                    <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Apna naam darj karen">
+                </div>
+                
+                <div>
+                    <label class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Email
+                    </label>
+                    <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="email@example.com">
+                </div>
+
+                <div>
+                    <label class="flex items-center text-sm font-medium text-gray-700 mb-2">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                        Password
+                    </label>
+                    <input type="password" id="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="••••••••">
+                </div>
+
+                <button onclick="handleAuth()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition transform hover:scale-105">
+                    <span id="authButtonText">Login</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboardScreen" style="display: none;" class="min-h-screen bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+        <div class="bg-white shadow-lg">
+            <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="bg-gradient-to-r from-purple-600 to-pink-500 w-10 h-10 rounded-full flex items-center justify-center mr-3">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-800">Reward App</h1>
+                        <p class="text-xs text-gray-600" id="userName"></p>
+                    </div>
+                </div>
+                <button onclick="handleLogout()" class="flex items-center text-red-600 hover:text-red-700 font-medium">
+                    <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                    Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto p-4">
+            <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-6 text-white shadow-xl">
+                    <p class="text-sm opacity-90">Total Balance</p>
+                    <p class="text-4xl font-bold">₹<span id="totalBalance">0.00</span></p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl p-6 text-white shadow-xl">
+                    <p class="text-sm opacity-90">Ads Watched</p>
+                    <p class="text-4xl font-bold" id="totalAds">0</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl p-6 text-white shadow-xl">
+                    <p class="text-sm opacity-90">Avg per Ad</p>
+                    <p class="text-4xl font-bold">₹<span id="avgPerAd">0.00</span></p>
+                </div>
+            </div>
+
+            <button onclick="showWithdrawScreen()" class="w-full bg-white text-green-600 py-4 rounded-xl font-bold text-lg mb-8 hover:shadow-xl transition">
+                UPI se Withdraw Karen
+            </button>
+
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Available Ads</h2>
+                <div class="grid md:grid-cols-2 gap-4" id="adsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdrawScreen" style="display: none;" class="min-h-screen bg-gradient-to-br from-green-400 to-blue-500 p-4">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-8 mt-10">
+            <button onclick="hideWithdrawScreen()" class="text-gray-600 mb-4 hover:text-gray-800">← Wapas jayen</button>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">UPI Withdrawal</h2>
+            <div class="bg-green-50 p-4 rounded-lg mb-6">
+                <p class="text-sm text-gray-600">Available Balance</p>
+                <p class="text-3xl font-bold text-green-600">₹<span id="withdrawBalance">0.00</span></p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">UPI ID</label>
+                    <input type="text" id="upiId" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="yourname@upi">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Amount (Min: ₹50)</label>
+                    <input type="number" id="withdrawAmount" class="w-full px-4 py-3 border border-gray-300 rounded-lg" placeholder="50" min="50">
+                </div>
+                <button onclick="handleWithdraw()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-lg font-semibold">Withdraw Karen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let isLogin = true;
+        let users = [];
+
+        const ads = [
+            { id: 1, title: "Shop Online", reward: 0.01 },
+            { id: 2, title: "Download App", reward: 0.01 },
+            { id: 3, title: "New Product", reward: 0.015 },
+            { id: 4, title: "Special Offer", reward: 0.02 }
+        ];
+
+        window.onload = function() {
+            const savedUser = JSON.parse(localStorage.getItem('rewardAppUser') || 'null');
+            const savedUsers = JSON.parse(localStorage.getItem('rewardAppUsers') || '[]');
+            users = savedUsers;
+            if (savedUser) {
+                currentUser = savedUser;
+                showDashboard();
+            }
+            renderAds();
+        };
+
+        function showLoginTab() {
+            isLogin = true;
+            document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md transition bg-white shadow text-purple-600 font-semibold';
+            document.getElementById('signupTab').className = 'flex-1 py-2 rounded-md transition text-gray-600';
+            document.getElementById('nameField').style.display = 'none';
+            document.getElementById('authButtonText').textContent = 'Login';
+        }
+
+        function showSignupTab() {
+            isLogin = false;
+            document.getElementById('signupTab').className = 'flex-1 py-2 rounded-md transition bg-white shadow text-purple-600 font-semibold';
+            document.getElementById('loginTab').className = 'flex-1 py-2 rounded-md transition text-gray-600';
+            document.getElementById('nameField').style.display = 'block';
+            document.getElementById('authButtonText').textContent = 'Sign Up';
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+            if (!email || !password) { alert('Kripya sabhi fields bharen'); return; }
+            if (isLogin) {
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) { currentUser = user; localStorage.setItem('rewardAppUser', JSON.stringify(user)); showDashboard(); } else { alert('Email ya password galat hai'); }
+} else {
+if (!name) { alert('Kripya naam bharen'); return; }
+if (users.find(u => u.email === email)) { alert('Ye email pehle se registered hai'); return; }
+const newUser = { email, password, name, balance: 0, adsWatched: 0 };
+users.push(newUser);
+localStorage.setItem('rewardAppUsers', JSON.stringify(users));
+currentUser = newUser;
+localStorage.setItem('rewardAppUser', JSON.stringify(currentUser));
+showDashboard();
+}
+}
+function showDashboard() {
+        document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('userName').textContent = currentUser.name;
+        updateDashboard();
+    }
+
+    function updateDashboard() {
+        document.getElementById('totalBalance').textContent = currentUser.balance.toFixed(2);
+        document.getElementById('totalAds').textContent = currentUser.adsWatched;
+        document.getElementById('withdrawBalance').textContent = currentUser.balance.toFixed(2);
+        const avg = currentUser.adsWatched > 0 ? (currentUser.balance / currentUser.adsWatched).toFixed(2) : '0.00';
+        document.getElementById('avgPerAd').textContent = avg;
+    }
+
+    function handleLogout() {
+        currentUser = null;
+        localStorage.removeItem('rewardAppUser');
+        document.getElementById('dashboardScreen').style.display = 'none';
+        document.getElementById('authScreen').style.display = 'flex';
+    }
+
+    function renderAds() {
+        const container = document.getElementById('adsContainer');
+        if (container) {
+            container.innerHTML = ads.map(ad => `
+                <div class="border-2 border-gray-200 rounded-xl p-5 hover:border-purple-500 transition">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-lg font-bold text-gray-800">${ad.title}</h3>
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold">₹${ad.reward}</span>
+                    </div>
+                    <button onclick="watchAd(${ad.id})" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-2 rounded-lg font-semibold">Ad Dekhen</button>
+                </div>
+            `).join('');
+        }
+    }
+
+    function watchAd(adId) {
+        if (typeof Android !== 'undefined') {
+            Android.showAd();
+        } else {
+            alert('Test mode - Real device mein AdMob ad dikhaayega');
+        }
+    }
+
+    function rewardUser(amount) {
+        currentUser.balance += amount;
+        currentUser.adsWatched++;
+        const updatedUsers = users.map(u => u.email === currentUser.email ? currentUser : u);
+        users = updatedUsers;
+        localStorage.setItem('rewardAppUsers', JSON.stringify(updatedUsers));
+        localStorage.setItem('rewardAppUser', JSON.stringify(currentUser));
+        alert(`Badhai ho! Aapne ₹${amount} kama liye!`);
+        updateDashboard();
+    }
+
+    function showWithdrawScreen() {
+        document.getElementById('dashboardScreen').style.display = 'none';
+        document.getElementById('withdrawScreen').style.display = 'block';
+    }
+
+    function hideWithdrawScreen() {
+        document.getElementById('withdrawScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+    }
+
+    function handleWithdraw() {
+        const upiId = document.getElementById('upiId').value;
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        if (!upiId || !amount) { alert('Kripya UPI ID aur amount bharen'); return; }
+        if (amount < 50) { alert('Minimum withdrawal ₹50 hai'); return; }
+        if (amount > currentUser.balance) { alert('Insufficient balance'); return; }
+        currentUser.balance -= amount;
+        const updatedUsers = users.map(u => u.email === currentUser.email ? currentUser : u);
+        users = updatedUsers;
+        localStorage.setItem('rewardAppUsers', JSON.stringify(updatedUsers));
+        localStorage.setItem('rewardAppUser', JSON.stringify(currentUser));
+        alert(`₹${amount} successfully transferred to ${upiId}`);
+        hideWithdrawScreen();
+        updateDashboard();
+    }
+</script>
